@@ -4,11 +4,12 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>What happens when you click 'Run'?</title>
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
 		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+		<link rel="stylesheet" href="css/custom.css">
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
@@ -16,8 +17,121 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section data-markdown data-separator-notes="^Note:">
+				`Spring Boot`: What happens when you hit `Run`?
+
+				Note:
+				This will be a weird mixture between begineer and intermediate topics. i will not go into details of what Inversion of Control is or why it's generally a good thing. 
+				I will not talk about what beans are.
+				At the same time, this will not be a super advanced talk. If you're intermediate or advanced, you will likely be familiar with some, if not all, of the concepts I'll cover and 
+				demonstrate. I'm aiming for the middle - the people who have used Spring Boot for a while, but often times feel like they're programming by coincidence - it works, but do I know why it works?
+				Do I know what just happened when I coppied this SO answer? 
+				</section>
+				<section>
+					<section data-markdown="markdown/event-list.md" class="lower-font"></section>
+					<section data-markdown="markdown/events-annex.md" class="lower-font"></section>
+				</section>
+				<section data-markdown data-separator-notes="^Note:" class="lower-font">
+					### `ApplicationContext` + `BeanFactory`
+					`BeanFactory` - provides the configuration framework and basic functionality.
+					
+					`ApplicationContext` - adds more enterprise-specific functionality. A complete superset of the `BeanFactory`.
+
+					Note: 
+					You should use an ApplicationContext unless you have a good reason for not doing so, 
+					with GenericApplicationContext and its subclass AnnotationConfigApplicationContext as the common implementations for custom bootstrapping.
+					
+					In SpringBoot's case, we don't really care about which one is used, since it is configured for us.
+
+					The internal state of Spring Boot applications is mostly represented by the Spring ApplicationContext.
+
+					If the application context has started successfully, Spring Boot assumes that the application is in a valid state.
+
+					Typically, an application developer does not need to subclass ApplicationContext implementation classes. 
+					Instead, the Spring IoC container can be extended by plugging in implementations of special integration interfaces.
+				</section>
+				<section>
+					<section data-markdown data-separator-notes="^Note:" class="lower-font">
+						### `Environment`
+	
+						The `Environment` interface is an abstraction integrated in the container that models two key aspects of the application environment: `profiles` and `properties`.
+						
+						* The role of the `Environment` object with relation to profiles is in determining which profiles (if any) are currently active, and which profiles (if any) should be active by default.
+	
+						* The role of the `Environment` object with relation to properties is to provide the user with a convenient service interface for configuring property sources 
+						and resolving properties from them.
+					</section>
+					<section data-markdown data-separator-notes="^Note:" class="lower-font">
+						### Adding custom `PropertySources` to the `Environment`
+						#### Using `@PropertySources`
+
+						```java
+						@Configuration
+						@PropertySource("classpath:/com/myco/app.properties")
+						public class AppConfig {
+
+							@Autowired
+							Environment env;
+
+							@Bean
+							public TestBean testBean() {
+								TestBean testBean = new TestBean();
+								testBean.setName(env.getProperty("testbean.name"));
+								return testBean;
+							}
+						}
+						```
+
+						Note:
+						A PropertySource is a simple abstraction over any source of key-value pairs, 
+						and Spring’s StandardEnvironment is configured with two PropertySource objects — 
+						one representing the set of JVM system properties (System.getProperties()) and one representing the set of system environment variables (System.getenv()).
+						
+						While using @PropertySource on your @SpringBootApplication may seem to be a convenient way to load a custom resource in the Environment, 
+						we do not recommend it. Such property sources are not added to the Environment until the application context is being refreshed. 
+						This is too late to configure certain properties such as logging.* and spring.main.* which are read before refresh begins.
+					</section>
+					<section data-markdown data-separator-notes="^Note:" class="lower-font">
+						### Adding custom `PropertySources` to the `Environment`
+						#### Manually registering with the context
+						
+						```java
+						ConfigurableApplicationContext ctx = // some way to get the context - could be through an application event, or by implementing ApplicationContextAware, etc.
+						MutablePropertySources sources = ctx.getEnvironment().getPropertySources();
+						sources.addFirst(new MyPropertySource());
+						```
+
+						Note: 
+						It is also possible to customize the Environment before the application context is refreshed by using EnvironmentPostProcessor
+					</section>
+					<section data-markdown="markdown/environment-property-sources.md" data-separator-notes="^Note:" class="lower-font">
+					</section>
+				</section>
+				<section data-markdown="initializers_listeners.md" data-separator-notes="^Note:" class="lower-font"></section>
+				<section>
+					<section data-markdown="bean_definitions.md" data-separator-notes="^Note:" class="lower-font"></section>
+					<section data-markdown="bean_definitions2.md" data-separator-notes="^Note:" class="lower-font"></section>
+				</section>
+				<section>
+An application is considered live as soon as the context has been refreshed, see Spring Boot application lifecycle and related Application Events.
+				</section>
+
+				<section data-markdown>
+					An application is considered ready as soon as application and command-line runners have been called, see Spring Boot application lifecycle and related Application Events.
+					
+					Tasks expected to run during startup should be executed by CommandLineRunner and ApplicationRunner components instead of using Spring component lifecycle callbacks such as @PostConstruct.
+				</section>
+
+				<section>
+					Liveness state
+				</section>
+				<section>
+					Readiness state
+				</section>
+
+				<section>
+					
+				</section>
 			</div>
 		</div>
 
@@ -31,7 +145,7 @@
 			// - https://revealjs.com/config/
 			Reveal.initialize({
 				hash: true,
-
+				disableLayout: false,
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
 			});
