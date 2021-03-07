@@ -1,6 +1,11 @@
 ### Adding custom `PropertySources` to the `Environment`
 #### Using `EnvironmentPostProcessor` (Spring Boot specific)
 
+
+```
+org.springframework.boot.env.EnvironmentPostProcessor=com.example.YourEnvironmentPostProcessor
+```
+
 ```java
 public class EnvironmentPostProcessorExample implements EnvironmentPostProcessor {
 
@@ -26,3 +31,7 @@ public class EnvironmentPostProcessorExample implements EnvironmentPostProcessor
   }						
 }
 ```
+
+Note: 
+It is also possible to customize the Environment before the application context is refreshed by using `EnvironmentPostProcessor`.
+Each implementation should be registered in META-INF/spring.factories, as shown in the example.
