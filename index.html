@@ -24,14 +24,26 @@
 				This will be focused mostly towards people with intermediate experience with Spring Boot. 
 				If you're intermediate or advanced, you will likely be familiar with some, if not all, of the concepts I'll cover and 
 				demonstrate. I'm aiming for the middle - the people who have used Spring Boot for a while, but often times feel like they're programming by coincidence - it works, but do I know why it works?
-				Do I know what just happened when I coppied this SO answer? 
+				Do I know what just happened when I copied this SO answer?
 				</section>
+
 				<section>
 					<section data-markdown="markdown/event-list.md" class="lower-font"></section>
 					<section data-markdown="markdown/events-annex.md" class="lower-font"></section>
 				</section>
 
-				<section data-markdown="markdown/context-factory-definitions.md" data-separator-notes="^Note:" class="lower-font"></section>
+				<section data-separator-notes="^Note:" >
+					<img src="images/SpringBootLifecycle.png">
+					<aside class="notes">
+						Let's set the scene by providing a visual representation of the entire event flow we just went over.
+
+						You often need not use application events, but it can be handy to know that they exist.
+						Internally, Spring Boot uses events to handle a variety of tasks.
+					</aside>
+				</section>
+
+				<section data-markdown="markdown/initializers_listeners.md" data-separator-notes="^Note:" class="lower-font"></section>
+
 				<section>
 					<section data-markdown="markdown/environment-definition.md" data-separator-notes="^Note:" class="lower-font"></section>
 					<section data-markdown="markdown/custom-property-sources.md" data-separator-notes="^Note:" class="lower-font"></section>
@@ -39,30 +51,30 @@
 					<section data-markdown="markdown/environment-property-sources.md" data-separator-notes="^Note:" class="lower-font"></section>
 				</section>
 
-				<section data-markdown="markdown/initializers_listeners.md" data-separator-notes="^Note:" class="lower-font"></section>
-
 				<section>
+					<section data-markdown="markdown/context-factory-definitions.md" data-separator-notes="^Note:" class="lower-font"></section>
 					<section data-markdown="markdown/bean_definitions.md" data-separator-notes="^Note:" class="lower-font"></section>
 					<section data-markdown="markdown/bean_definitions2.md" data-separator-notes="^Note:" class="lower-font"></section>
-				</section>
-
-				<section>
 					<section data-markdown="markdown/context-refresh.md" data-separator-notes="^Note:" class="lower-font"></section>
 					<section data-markdown="markdown/bean-factory-post-processor.md" data-separator-notes="^Note:" class="lower-font"></section>
 				</section>
 
-				<section data-markdown="markdown/application-command-line-runners.md" data-separator-notes="^Note:" class="lower-font"></section>
-
 				<section data-markdown="markdown/liveness-readiness-state.md" data-separator-notes="^Note:" class="lower-font"></section>
 
-				<section>Enough talk, more action! Let's demo!</section>
+				<section data-markdown="markdown/application-command-line-runners.md" data-separator-notes="^Note:" class="lower-font"></section>
 
 				<section data-separator-notes="^Note:" >
 					<img src="images/SpringBootLifecycle.png">
 					<aside class="notes">
-						Before we do that, let's help us set the scene by providing a visual representation of the entire event flow we just went over.
+						Let's set the scene by providing a visual representation of the entire event flow we just went over.
+
+						You often need not use application events, but it can be handy to know that they exist.
+						Internally, Spring Boot uses events to handle a variety of tasks.
 					</aside>
 				</section>
+
+				<section>Q&A!</section>
+
 			</div>
 		</div>
 

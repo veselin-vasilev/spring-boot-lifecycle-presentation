@@ -26,3 +26,5 @@ one representing the set of JVM system properties (System.getProperties()) and o
 While using @PropertySource on your @SpringBootApplication may seem to be a convenient way to load a custom resource in the Environment, 
 we do not recommend it. Such property sources are not added to the Environment until the application context is being refreshed. 
 This is too late to configure certain properties such as logging.* and spring.main.* which are read before refresh begins.
+
+Source -> https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto.application.customize-the-environment-or-application-context 
